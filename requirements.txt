@@ -1,4 +1,4 @@
 Django>=1.10
 lxml==0.24.0
-python-docx==0.8.6
+python-docx==0.8.5
 setuptools==18.0.1
