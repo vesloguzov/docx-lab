@@ -8,11 +8,11 @@ from docx.shared import Pt
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-def get_section_margins(section):
-    print "Top: ", round(section.top_margin.cm, 2)
-    print "Bottom: ", round(section.bottom_margin.cm, 2)
-    print "Left: ", round(section.left_margin.cm, 2)
-    print "Right: ", round(section.right_margin.cm, 2)
+# def get_section_margins(section):
+#     print "Top: ", round(section.top_margin.cm, 2)
+#     print "Bottom: ", round(section.bottom_margin.cm, 2)
+#     print "Left: ", round(section.left_margin.cm, 2)
+#     print "Right: ", round(section.right_margin.cm, 2)
 
 
 document = Document('data/dummy.docx')
@@ -58,33 +58,33 @@ last_style = ''
 styles = document.styles
 for style in styles:
     if "ФИО" in style.name:
-        print style.name
+        print(style.name)
 
         try:
-            print 'Шрифт: ' + style.font.name
+            print 'Имя шрифта: ' + style.font.name
+            print 'Размер шрифта: ' + style.font.size
         except:
-            print 'Родительский стиль: ' + style.base_style.name
-            parentStyle = style.base_style
-            #print 'Шрифт родительского стиля: ' + parentStyle.font.name
-            print 'Ошибка получения имени шрифта'
-            pass
+            print 'Родительский стиль: ', style.base_style.name
+            # parent_style = document.styles[style.base_style.name]
+            # print 'Имя родительского шрифта: ', parent_style.font.name
+            # print 'Размер родительского шрифта: ', parent_style.font.name
 
-        try:
-            print 'Размер шрифт: ' + style.font.size.pt
-        except:
-            print 'Ошибка получения размера шрифта'
-            pass
-
-        try:
-            paragraph_format = style.paragraph_format
-            print paragraph_format
-            print paragraph_format.first_line_indent.cm
-            print paragraph_format.space_before.pt
-            print paragraph_format.space_after.pt
-            print paragraph_format.line_spacing
-        except:
-            print 'Ошибка получения параметра'
-            pass
+        # try:
+        #     print 'Размер шрифт: ' + style.font.size.pt
+        # except:
+        #     print style.base_style
+        #     pass
+        #
+        # try:
+        #     paragraph_format = style.paragraph_format
+        #     print paragraph_format
+        #     print paragraph_format.first_line_indent.cm
+        #     print paragraph_format.space_before.pt
+        #     print paragraph_format.space_after.pt
+        #     print paragraph_format.line_spacing
+        # except:
+        #     print 'Ошибка получения параметра'
+        #     pass
         print '\n'
 
 #style.builtin #Стиль сделан пользователем
