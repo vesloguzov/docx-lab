@@ -5,6 +5,7 @@ import math
 from docx import Document
 from docx.enum.shape import WD_INLINE_SHAPE
 from docx.shared import Inches
+from docx.text.paragraph import Paragraph
 
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -34,13 +35,13 @@ document = Document('data/internet.docx')
 # print document.core_properties.title
 # print document.core_properties.version
 last_style = ''
+
+
 tables = document.tables
-breaks = document.breaks
-print breaks
+print tables
 
-# for p in document.paragraphs:
-#     print [s for s in p.inline_shapes]
-
+for section in document.sections:
+    print section.primary_header
 
 # for row in tables[0].rows:
 #     for cell in row.cells:
@@ -52,8 +53,6 @@ print breaks
 #     print row.cells[0].paragraphs[0].text + row.cells[2].paragraphs[0].text
 
 # for p in document.paragraphs:
-#   print p.style.name, p.text
-#
 #     if p.style.name != "Normal":
 #         if "Заголовок" in p.style.name:
 #             print p.style.name, p.text
@@ -71,56 +70,27 @@ print breaks
 #         elif "Указатель" in p.style.name:
 #             print p.style.name, p.text
 
-# for p in document.paragraphs:
-#     print p.style, p.text
+# body_element = document._body._body
+# print(body_element.xml)
+#
+# ps = body_element.xpath('./w:hyperlink/w:r')
+#
+# paragraphs = [Paragraph(p, None) for p in ps]
+#
+
+
+
+# print "!!!", ps
+v
 
 # styles = document.styles
 # for style in styles:
 #     if "ФИО" in style.name:
-#         print(style.name)
-#         print style.font.italic
-#         print style.font.bold
-#
 #         try:
-#             print 'Имя шрифта: ', style.paragraph_format
+#             print style.font.name
 #         except:
-#             # print 'Родительский стиль: ', style.base_style.name
-#             # parent_style = document.styles[style.base_style.name]
-#             # print 'Имя родительского шрифта: ', parent_style.font.name
-#             pass
-#
-#         try:
-#             print 'Размер шрифта: ' + style.font.size
-#         except:
-#             # print 'Родительский стиль: ', style.base_style.name
-#             # parent_style = document.styles[style.base_style.name]
-#             # print 'Размер родительского шрифта: ', parent_style.font.size.pt
-#             pass
-
-        # try:
-        #     print 'Размер шрифта: ' + style.font.size
-        # except:
-        #     print 'Родительский стиль: ', style.base_style.name
-        #     parent_style = document.styles[style.base_style.name]
-        #     print 'Имя родительского шрифта: ', parent_style.font.name
-        #     print 'Размер родительского шрифта: ', parent_style.font.name
-        # try:
-        #     print 'Размер шрифт: ' + style.font.size.pt
-        # except:
-        #     print style.base_style
-        #     pass
-        #
-        # try:
-        #     paragraph_format = style.paragraph_format
-        #     print paragraph_format
-        #     print paragraph_format.first_line_indent.cm
-        #     print paragraph_format.space_before.pt
-        #     print paragraph_format.space_after.pt
-        #     print paragraph_format.line_spacing
-        # except:
-        #     print 'Ошибка получения параметра'
-        #     pass
-        #print '\n'
+#             print 'Родительский стиль: ', style.base_style.name
+#         print '\n'
 
 #style.builtin #Стиль сделан пользователем
 #style.paragraph_format.first_line_indent.cm # Отступ первой строки
