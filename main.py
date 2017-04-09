@@ -6,15 +6,20 @@ from docx import Document
 from docx.enum.shape import WD_INLINE_SHAPE
 from docx.shared import Inches
 from docx.text.paragraph import Paragraph
-
+from lxml import etree
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-# def get_section_margins(section):
-#     print "Top: ", round(section.top_margin.cm, 2)
-#     print "Bottom: ", round(section.bottom_margin.cm, 2)
-#     print "Left: ", round(section.left_margin.cm, 2)
-#     print "Right: ", round(section.right_margin.cm, 2)
+def check_section_margins(sections):
+    top_margin = 0
+    bottom_margin = 0
+    left_margin = 0
+    right_margin = 0
+    for section in sections:
+        print "Top: ", round(section.top_margin.cm, 2)
+        print "Bottom: ", round(section.bottom_margin.cm, 2)
+        print "Left: ", round(section.left_margin.cm, 2)
+        print "Right: ", round(section.right_margin.cm, 2)
 
 document = Document('data/internet.docx')
 
@@ -38,10 +43,9 @@ last_style = ''
 
 
 tables = document.tables
-print tables
 
-for section in document.sections:
-    print section.primary_header
+# for sec in document.sections:
+#     print sec.header.body
 
 # for row in tables[0].rows:
 #     for cell in row.cells:
@@ -52,7 +56,9 @@ for section in document.sections:
 # for row in tables[0].rows:
 #     print row.cells[0].paragraphs[0].text + row.cells[2].paragraphs[0].text
 
-# for p in document.paragraphs:
+for p in document.paragraphs:
+#     run = p.add_run()
+    print p.text, p.style.paragraph_format.space_after
 #     if p.style.name != "Normal":
 #         if "Заголовок" in p.style.name:
 #             print p.style.name, p.text
@@ -81,7 +87,6 @@ for section in document.sections:
 
 
 # print "!!!", ps
-v
 
 # styles = document.styles
 # for style in styles:

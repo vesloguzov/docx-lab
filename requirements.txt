@@ -1,3 +1,14 @@
 Django>=1.10
 python-docx==0.8.6
 setuptools==18.0.1
+behave>=1.2.3
+
+flake8>=2.0
+
+lxml>=3.1.0
+
+mock>=1.0.1
+
+pyparsing>=2.0.1
+
+pytest>=2.5
