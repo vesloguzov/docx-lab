@@ -1,34 +1,56 @@
-# encoding=utf8
+# -*- coding: UTF-8 -*-
 import sys
 import math
+import re
 
 from docx import Document
 from docx.enum.shape import WD_INLINE_SHAPE
 from docx.shared import Inches
 from docx.text.paragraph import Paragraph
 from lxml import etree
-reload(sys)
-sys.setdefaultencoding('utf8')
+# reload(sys)
+#sys.setdefaultencoding('utf8')
 
 file_analyzes = {}
 
 def get_general_properties(document):
     general_properties = {}
-    general_properties["author"] = document.core_properties.author # Автор документа
-    general_properties["created"] = document.core_properties.created # Дата создания документа
-    general_properties["last_modified_by"] = document.core_properties.last_modified_by # Пользователь, который менял последний
-    general_properties["modified"] = document.core_properties.modified # Время изменения
-    general_properties["title"] = document.core_properties.title #Название
+    general_properties["author"] = str(document.core_properties.author) # Автор документа
+    general_properties["created"] = str(document.core_properties.created) # Дата создания документа
+    general_properties["last_modified_by"] = str(document.core_properties.last_modified_by) # Пользователь, который менял последний
+    general_properties["modified"] = str(document.core_properties.modified) # Время изменения
+    general_properties["title"] = str(document.core_properties.title) #Название
     file_analyzes["general_properties"] = general_properties
 
 def get_document_margins(document):
     margins = {}
     sections = document.sections
-    margins["top"] = round(sections[0].top_margin.cm, 2)
-    margins["bottom"] = round(sections[0].bottom_margin.cm, 2)
-    margins["left"] = round(sections[0].left_margin.cm, 2)
-    margins["right"] = round(sections[0].right_margin.cm, 2)
+    margins["top"] = str(round(sections[0].top_margin.cm, 2))
+    margins["bottom"] = str(round(sections[0].bottom_margin.cm, 2))
+    margins["left"] = str(round(sections[0].left_margin.cm, 2))
+    margins["right"] = str(round(sections[0].right_margin.cm, 2))
     file_analyzes["margins"] = margins
+
+def get_headers_texts(document):
+    document_headers_texts = []
+    count = 0
+    for p in document.paragraphs:
+        if p.style.name != "Normal":
+            if "Заголовок" in p.style.name and "ФИО" in p.style.name:
+                text = re.sub(r'\s+', ' ', p.text)
+                document_headers_texts.append((text))
+        if 'toc' in p.style.name:
+            count +=1
+
+    file_analyzes["menu_item_count"] = count
+    file_analyzes["document_headers_texts"] = document_headers_texts
+
+def predmentny_ukazatel(document):
+    ukazki = []
+    for p in document.paragraphs:
+        if "Заголовок" in p.style.name and "предметный указатель" in p.text.lower():
+
+            print(p.text)
 
 def get_custom_styles(document):
     custom_styles = {}
@@ -38,35 +60,36 @@ def get_custom_styles(document):
             if "Заголовок" in s.name:
                 header_style = {}
                 custom_head_style = all_docx_styles[s.base_style.name]
-                header_style["name"] = s.name
-                header_style["font_name"] = s.font.name
-                header_style["font_size"] = s.font.size
-                header_style["font_italic"] = s.font.italic
-                header_style["font_bold"] = s.font.bold
-                header_style["line_spacing"] = s.paragraph_format.line_spacing
-                header_style["first_line_indent"] = s.paragraph_format.first_line_indent
-                header_style["space_before"] = s.paragraph_format.space_before
-                header_style["space_after"] = s.paragraph_format.space_after
-                header_style["alignment"] = s.paragraph_format.alignment
-                custom_styles["header_style"] = header_style
+                header_style["name"] = str(s.name)
+                header_style["font_name"] = str(s.font.name)
+                header_style["font_size"] = str(s.font.size)
+                header_style["font_italic"] = str(s.font.italic)
+                header_style["font_bold"] = str(s.font.bold)
+                header_style["line_spacing"] = str(s.paragraph_format.line_spacing)
+                header_style["first_line_indent"] = str(s.paragraph_format.first_line_indent)
+                header_style["space_before"] = str(s.paragraph_format.space_before)
+                header_style["space_after"] = str(s.paragraph_format.space_after)
+                header_style["alignment"] = str(s.paragraph_format.alignment)
+                custom_styles["header_style"] = str(header_style)
             else:
                 paragraph_style = {}
                 custom_paragraph_style = all_docx_styles[s.base_style.name]
                 header_style["name"] = s.name
                 header_style["font_name"] = s.font.name
 
-                print s.paragraph_format.alignment
+                # print s.paragraph_format.alignment
 
     file_analyzes["custom_styles"] = custom_styles
 
 
 document = Document('data/internet.docx')
-
+get_headers_texts(document)
 get_general_properties(document)
 get_document_margins(document)
 get_custom_styles(document)
+predmentny_ukazatel(document)
 
-print file_analyzes
+# print(file_analyzes)
 
 
 #
@@ -88,9 +111,9 @@ print file_analyzes
 # print  file_analyzes
 
 
-
-# for p in document.paragraphs:
-#     run = p.add_run()
+# for s in document.paragraphs:
+#     print(s.style.name)
+    #     run = p.add_run()
 #     print p.text, p.style.paragraph_format.space_after
 #     if p.style.name != "Normal":
 #         if "Заголовок" in p.style.name:
