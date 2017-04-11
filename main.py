@@ -76,7 +76,7 @@ def get_analyze_the_document(path):
                 if "Заголовок" in s.name:
                     header_style = {}
                     custom_head_style = all_docx_styles[s.base_style.name]
-                    header_style["name"] = str(s.name)
+                    header_style["name"] = s.name
                     header_style["font_name"] = str(s.font.name)
                     header_style["font_size"] = str(s.font.size)
                     header_style["font_italic"] = str(s.font.italic)
@@ -86,12 +86,13 @@ def get_analyze_the_document(path):
                     header_style["space_before"] = str(s.paragraph_format.space_before)
                     header_style["space_after"] = str(s.paragraph_format.space_after)
                     header_style["alignment"] = str(s.paragraph_format.alignment)
-                    custom_styles["header_style"] = str(header_style)
+                    custom_styles["header_style"] = header_style
                 else:
-                    paragraph_style = {}
-                    custom_paragraph_style = all_docx_styles[s.base_style.name]
-                    header_style["name"] = s.name
-                    header_style["font_name"] = s.font.name
+                    pass
+                    # paragraph_style = {}
+                    # custom_paragraph_style = all_docx_styles[s.base_style.name]
+                    # header_style["name"] = s.name
+                    # header_style["font_name"] = s.font.name
 
                     # print s.paragraph_format.alignment
 
