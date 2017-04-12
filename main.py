@@ -87,14 +87,20 @@ def get_analyze_the_document(path):
                     header_style["space_after"] = str(s.paragraph_format.space_after)
                     header_style["alignment"] = str(s.paragraph_format.alignment)
                     custom_styles["header_style"] = header_style
-                else:
-                    pass
-                    # paragraph_style = {}
-                    # custom_paragraph_style = all_docx_styles[s.base_style.name]
-                    # header_style["name"] = s.name
-                    # header_style["font_name"] = s.font.name
-
-                    # print s.paragraph_format.alignment
+                elif "Основной" in s.name:
+                    paragraph_style = {}
+                    custom_head_style = all_docx_styles[s.base_style.name]
+                    paragraph_style["name"] = s.name
+                    paragraph_style["font_name"] = str(s.font.name)
+                    paragraph_style["font_size"] = str(s.font.size)
+                    paragraph_style["font_italic"] = str(s.font.italic)
+                    paragraph_style["font_bold"] = str(s.font.bold)
+                    paragraph_style["line_spacing"] = str(s.paragraph_format.line_spacing)
+                    paragraph_style["first_line_indent"] = str(s.paragraph_format.first_line_indent)
+                    paragraph_style["space_before"] = str(s.paragraph_format.space_before)
+                    paragraph_style["space_after"] = str(s.paragraph_format.space_after)
+                    paragraph_style["alignment"] = str(s.paragraph_format.alignment)
+                    custom_styles["paragraph_style"] = paragraph_style
 
         file_analyzes["custom_styles"] = custom_styles
 
@@ -149,14 +155,121 @@ def get_analyze_the_document(path):
     get_document_heading(document)
     return file_analyzes
 
-correct_analyze_object = get_analyze_the_document('data/internet.docx')
-student_analyze_object = get_analyze_the_document('data/internet dummy.docx')
-
-
 def documents_comments(correct_analyze_object, student_analyze_object):
     list = []
     cao = correct_analyze_object
     sao = student_analyze_object
+
+    custom_header_style_msg = ""
+    if("header_style" in sao["custom_styles"].keys()):
+        custom_header_style_msg = "Стиль заголовков создан. \n"
+        if(sao["custom_styles"]["header_style"]["font_name"] == cao["custom_styles"]["header_style"]["font_name"]):
+            custom_header_style_msg += "Стиль заголовков. Шрифт заголовков задан правильно. \n"
+        else:
+            custom_header_style_msg += "Стиль заголовков. Шрифт заголовков задан неправильно. \n"
+
+        if(sao["custom_styles"]["header_style"]["font_size"] == cao["custom_styles"]["header_style"]["font_size"]):
+            custom_header_style_msg += "Стиль заголовков. Размер шрифта заголовков задан правильно. \n"
+        else:
+            custom_header_style_msg += "Стиль заголовков. Размер шрифта заголовков задан неправильно. \n"
+
+        if(sao["custom_styles"]["header_style"]["font_bold"] == cao["custom_styles"]["header_style"]["font_bold"]):
+            custom_header_style_msg += "Стиль заголовков. Толщина шрифт заголовков задана правильно. \n"
+        else:
+            custom_header_style_msg += "Стиль заголовков. Толщина шрифт заголовков задана неправильно. \n"
+
+        if(sao["custom_styles"]["header_style"]["font_italic"] == cao["custom_styles"]["header_style"]["font_italic"]):
+            custom_header_style_msg += "Стиль заголовков. Наклон шрифта заголовков задана правильно. \n"
+        else:
+            custom_header_style_msg += "Стиль заголовков. Наклон шрифта заголовков задана неправильно. \n"
+
+        if(sao["custom_styles"]["header_style"]["alignment"] == cao["custom_styles"]["header_style"]["alignment"]):
+            custom_header_style_msg += "Стиль заголовков. Выравнивание шрифта заголовков задана правильно."
+        else:
+            custom_header_style_msg += "Стиль заголовков. Выравнивание шрифта заголовков задана неправильно."
+
+    else:
+        custom_header_style_msg = "Стиль заголовков не создан"
+
+    list.append(custom_header_style_msg)
+
+
+    custom_paragraph_style_msg = ""
+    if("paragraph_style" in sao["custom_styles"].keys()):
+        custom_paragraph_style_msg = "Стиль параграфа создан. \n"
+        if(sao["custom_styles"]["paragraph_style"]["font_name"] == cao["custom_styles"]["paragraph_style"]["font_name"]):
+            custom_paragraph_style_msg += "Стиль параграфа. Шрифт параграфа задан правильно. \n"
+        else:
+            custom_paragraph_style_msg += "Стиль параграфа. Шрифт параграфа задан неправильно. \n"
+
+        if(sao["custom_styles"]["paragraph_style"]["font_size"] == cao["custom_styles"]["paragraph_style"]["font_size"]):
+            custom_paragraph_style_msg += "Стиль параграфа. Размер шрифта параграфа задан правильно. \n"
+        else:
+            custom_paragraph_style_msg += "Стиль параграфа. Размер шрифта параграфа задан неправильно. \n"
+
+        if(sao["custom_styles"]["paragraph_style"]["font_bold"] == cao["custom_styles"]["paragraph_style"]["font_bold"]):
+            custom_paragraph_style_msg += "Стиль параграфа. Толщина шрифта параграфа задана правильно. \n"
+        else:
+            custom_paragraph_style_msg += "Стиль параграфа. Толщина шрифта параграфа задана неправильно. \n"
+
+        if(sao["custom_styles"]["paragraph_style"]["font_italic"] == cao["custom_styles"]["paragraph_style"]["font_italic"]):
+            custom_paragraph_style_msg += "Стиль параграфа. Наклон шрифта параграфа задана правильно. \n"
+        else:
+            custom_paragraph_style_msg += "Стиль параграфа. Наклон шрифта параграфа задана неправильно. \n"
+
+        if(sao["custom_styles"]["paragraph_style"]["alignment"] == cao["custom_styles"]["paragraph_style"]["alignment"]):
+            custom_paragraph_style_msg += "Стиль параграфа. Выравнивание шрифта параграфа задана правильно."
+        else:
+            custom_paragraph_style_msg += "Стиль параграфа. Выравнивание шрифта параграфа задана неправильно."
+
+    else:
+        custom_paragraph_style_msg = "Стиль параграфа не создан"
+
+    list.append(custom_paragraph_style_msg)
+
+
+
+    about_headers_msg = ""
+    headers_diff =  [item for item in cao["document_headers_texts"] if item not in sao["document_headers_texts"]]
+    if(len(headers_diff) == 0):
+        about_headers_msg = "Все заголовки оформлены верно"
+    else:
+        about_headers_msg = "Некоторые заголовки оформлены неверно, обратите внимание на заголовки: \n"
+        for diff in headers_diff:
+            about_headers_msg += diff + " "
+    list.append(about_headers_msg)
+
+    # ДОДЕЛАТЬ МЕНЮ
+    menu_msg = ""
+    if(cao["menu_item_count"] == sao["menu_item_count"]):
+        menu_msg = "Меню создано"
+    else:
+        menu_msg = "Меню не создано"
+    list.append(menu_msg)
+
+    about_subject_index_msg = ""
+    subject_index_diff =  [item for item in cao["subject_index"] if item not in sao["subject_index"]]
+    if(len(subject_index_diff) == 0):
+        about_subject_index_msg = "Предметный указатель создан верно"
+    else:
+        about_subject_index_msg = "Предметный указатель создан неверно, обратите внимание на: \n"
+        for diff in subject_index_diff:
+            about_subject_index_msg += diff + " "
+    list.append(about_subject_index_msg)
+
+    page_num_msg = ""
+    if(cao["document_page_numbering"] == sao["document_page_numbering"]):
+        page_num_msg = "Нумерация страниц выставлена верно"
+    else:
+        page_num_msg = "Нумерация страниц выставлена не верно"
+    list.append(page_num_msg)
+
+    doc_heading_msg = ""
+    if(cao["document_header"] == sao["document_header"]):
+        doc_heading_msg = "Верхний колонтитул заполнен верно"
+    else:
+        doc_heading_msg = "Верхний колонтитул заполнен не верно"
+    list.append(doc_heading_msg)
 
     if (cao["margins"]["top"] == sao["margins"]["top"]):
         list.append("Верхний отступ заполен верно")
@@ -178,58 +291,16 @@ def documents_comments(correct_analyze_object, student_analyze_object):
     else:
         list.append("Ошибка при заполнии правого отступа")
 
-    about_headers_msg = ""
-    headers_diff =  [item for item in cao["document_headers_texts"] if item not in sao["document_headers_texts"]]
-    if(len(headers_diff) == 0):
-        labout_headers_msg = "Все заголовки оформлены верно"
-    else:
-        about_headers_msg = "Некоторые заголовки оформлены неверно, обратите внимание на заголовки: "
-        for diff in headers_diff:
-            about_headers_msg += diff + " "
-    list.append(about_headers_msg)
-
-
-    # ДОДЕЛАТЬ МЕНЮ
-    menu_msg = ""
-    if(cao["menu_item_count"] == sao["menu_item_count"]):
-        menu_msg = "Меню создано"
-    else:
-        menu_msg = "Меню не создано"
-    list.append(menu_msg)
-
-    about_subject_index_msg = ""
-    subject_index_diff =  [item for item in cao["subject_index"] if item not in sao["subject_index"]]
-    if(len(subject_index_diff) == 0):
-        about_subject_index_msg = "Предметный указатель создан верно"
-    else:
-        about_subject_index_msg = "Предметный указатель создан неверно, обратите внимание на: "
-        for diff in subject_index_diff:
-            about_subject_index_msg += diff + " "
-    list.append(about_subject_index_msg)
-
-    page_num_msg = ""
-    if(cao["document_page_numbering"] == sao["document_page_numbering"]):
-        page_num_msg = "Нумерация страниц выставлена верно"
-    else:
-        page_num_msg = "Нумерация страниц выставлена не верно"
-    list.append(page_num_msg)
-
-    doc_heading_msg = ""
-    if(cao["document_header"] == sao["document_header"]):
-        doc_heading_msg = "Верхний колонтитул заполнен верно"
-    else:
-        doc_heading_msg = "Верхний колонтитул заполнен не верно"
-    list.append(doc_heading_msg)
-
     return list
 
-
+correct_analyze_object = get_analyze_the_document('data/internet.docx')
+student_analyze_object = get_analyze_the_document('data/internet.docx')
 coments = documents_comments(correct_analyze_object, student_analyze_object)
 
-print correct_analyze_object
+# print correct_analyze_object
 
 for coment in coments:
-    print coment
+    print(coment)
 
 # document = Document('data/internet dummy.docx')
 #
