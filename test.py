@@ -17,13 +17,18 @@ from docx.opc.constants import RELATIONSHIP_TYPE as RT
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-document_path = 'data/internet_test.docx'
-document = Document(document_path)
+response_message = {}
+response_message["errors"] = []
+response_message["custom_styles"] = {}
+response_message["document_margins"] = {}
+response_message["document_header"] = {}
+response_message["footnote"] = {}
 
-def get_custom_header_style(document):
+
+def get_custom_header_style(document, header_name):
     custom_head_style = {}
     for s in document.styles:
-        if s.builtin == False and "Заголовок_тест" in s.name:
+        if s.builtin == False and header_name in s.name:
             custom_head_style["base_style"] = s.base_style.name
             custom_head_style["font_name"] = s.font.name
             custom_head_style["font_italic"] = s.font.italic
@@ -33,10 +38,10 @@ def get_custom_header_style(document):
             custom_head_style["alignment"] = s.paragraph_format.alignment
     return custom_head_style
 
-def get_custom_main_style(document):
+def get_custom_main_style(document, main_name):
     custom_main_style = {}
     for s in document.styles:
-        if s.builtin == False and "Основной_тест" in s.name:
+        if s.builtin == False and main_name in s.name:
             custom_main_style["base_style"] = s.base_style.name
             custom_main_style["font_name"] = s.font.name
             custom_main_style["font_italic"] = s.font.italic
@@ -116,5 +121,33 @@ def is_document_numbering(document):
             pass
     print document_page_numbering
 
-is_document_numbering(document)
+def is_table_of_contents(document, headers):
+    # Доделать
+    for p in document.paragraphs:
+        if 'toc' in p.style.name:
+            return True
+    return False
 
+def get_docement_headers(document, header_name):
+    headers = []
+    for p in document.paragraphs:
+        if header_name in p.style.name:
+            if p.text != '':
+                text = re.sub(r'\s+', ' ', p.text)
+                headers.append(text)
+                print text
+    return headers
+
+document_path = 'data/internet_test.docx'
+document = Document(document_path)
+
+
+print document
+
+# is_document_numbering(document)
+header_style_name = "Заголовок_тест"
+main_style_name = "Основной_тест"
+#
+# print get_custom_main_style(document, main_style_name)
+
+print ["лол", "кек"].sort() == ["кек", "лол"].sort()
