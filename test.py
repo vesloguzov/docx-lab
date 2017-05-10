@@ -138,7 +138,7 @@ def get_docement_headers(document, header_name):
                 print text
     return headers
 
-document_path = 'data/internet_test.docx'
+document_path = 'data/internet_tables.docx'
 document = Document(document_path)
 
 
@@ -149,5 +149,3 @@ header_style_name = "Заголовок_тест"
 main_style_name = "Основной_тест"
 #
 # print get_custom_main_style(document, main_style_name)
-
-print ["лол", "кек"].sort() == ["кек", "лол"].sort()
